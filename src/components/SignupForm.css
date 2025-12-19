@@ -1,0 +1,135 @@
+.signup-page {
+  min-height: 100vh;
+  padding: 2rem 4rem;
+  font-family: system-ui, sans-serif;
+  margin: auto;
+}
+
+/* Header */
+.auth-header {
+  margin-bottom: 3rem;
+}
+
+#link {
+  text-decoration: none;
+}
+.logo {
+  color: #0a3cff;
+  font-weight: 700;
+}
+
+/* Hero Section */
+.signup-hero {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 3rem;
+  margin-bottom: 4rem;
+}
+
+.signup-text h1 {
+  font-size: 2rem;
+  margin-bottom: 1rem;
+}
+
+.signup-text p {
+  color: #555;
+  max-width: 420px;
+}
+
+.signup-image img {
+  max-width: 420px;
+}
+
+/* Form */
+.signup-form-wrapper {
+  max-width: 900px;
+}
+
+.signup-form {
+  width: 100%;
+}
+
+.form-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1rem;
+}
+
+.form-grid input {
+  padding: 0.75rem;
+  border: 1px solid #ddd;
+  border-radius: 6px;
+}
+
+.password-field {
+  position: relative;
+}
+
+.password-field input {
+  width: 100%;
+}
+
+.toggle-password {
+  position: absolute;
+  right: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  cursor: pointer;
+  color: #6b7280;
+  font-size: 18px;
+}
+
+.toggle-password:hover {
+  color: #000;
+}
+
+.checkbox {
+  display: flex;
+  gap: 0.5rem;
+  margin: 1.5rem 0;
+  font-size: 0.9rem;
+}
+
+.btn-primary {
+  width: 100%;
+  padding: 0.9rem;
+  background: #0a3cff;
+  color: #fff;
+  border: none;
+  border-radius: 6px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.login-text {
+  text-align: center;
+  margin-top: 1rem;
+}
+
+.login-text span {
+  color: #0a3cff;
+  cursor: pointer;
+}
+/* Responsive Styles */
+@media (max-width: 768px) {
+  .signup-hero {
+    flex-direction: column;
+    text-align: center;
+  }
+
+  .signup-image img {
+    max-width: 100%;
+  }
+
+  .form-grid {
+    grid-template-columns: 1fr;
+  }
+}
+/* Large Devices */
+@media (min-width: 1280px) {
+  .signup-page {
+    padding: 3rem 6rem;
+    width: 70%;
+  }
+}
