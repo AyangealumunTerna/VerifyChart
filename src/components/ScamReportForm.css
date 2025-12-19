@@ -1,0 +1,63 @@
+.scam-report {
+  padding: 0rem 1rem;
+}
+
+.scam-report-container {
+  max-width: 800px;
+  margin: 0 auto;
+  /* background: #fff; */
+  padding: 2rem 1.5rem;
+  border-radius: 14px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+}
+
+.scam-report h2 {
+  font-size: 28px;
+  font-weight: 700;
+  text-align: center;
+  margin-bottom: 0.75rem;
+
+}
+
+#red {
+  color: #e63946;
+}
+
+.scam-report-subtext {
+  font-size: 16px;
+  color: #555; 
+  text-align: center;
+  margin-bottom: 1.5rem;
+}
+
+.scam-report-form {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.scam-report-form textarea {
+  min-height: 160px;
+  resize: vertical;
+  padding: 1rem;
+  font-size: 16px;
+  border-radius: 10px;
+  border: 1px solid #ccc;
+  outline: none;
+}
+
+.scam-report-form textarea:focus {
+  border-color: #0001ff;
+}
+
+.scam-report-form button {
+  align-self: flex-start;
+  padding: 0.8rem 2rem;
+  font-size: 16px;
+  font-weight: 600;
+  background: #e63946;
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+}

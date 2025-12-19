@@ -1,0 +1,37 @@
+.features-section {
+  background: #f3f4ff;
+  padding: 3rem 1.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.feature-card {
+  background: #ffffff;
+  border-radius: 14px;
+  padding: 1.5rem;
+  display: block;
+  align-items: center;
+  gap: 1rem;
+}
+
+.feature-card h4 {
+  font-size: 18px;
+  font-weight: 600;
+  margin-bottom: 0.25rem;
+}
+
+.feature-card p {
+  font-size: 14px;
+  color: #555;
+}
+
+/* Icon styles */
+#icon {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  font-size: 18px;
+}

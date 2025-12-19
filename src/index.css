@@ -1,0 +1,104 @@
+* {
+  box-sizing: border-box;
+}
+:root {
+  /* BLUE – Primary */
+  --blue-light: #e6e6ff;
+  --blue-light-hover: #d9d9ff;
+  --blue-light-active: #b0b0ff;
+
+  --blue-normal: #0001ff;
+  --blue-normal-hover: #0001e6;
+  --blue-normal-active: #0001cc;
+
+  --blue-dark: #0001bf;
+  --blue-dark-hover: #000199;
+  --blue-dark-active: #000073;
+
+  --blue-darker: #000059;
+
+  /* BLACK – Text */
+  --black-light: #e6e6e6;
+  --black-light-hover: #d9d9d9;
+  --black-light-active: #b0b0b0;
+
+  --black-normal: #010101;
+
+   /* GREEN – Success */
+  --green-light: #e6ffe7;
+  --green-light-hover: #d9ffdb;
+  --green-light-active: #b0ffb5;
+
+  --green-normal: #01ff10;
+  --green-normal-hover: #01e60e;
+  --green-normal-active: #01cc0d;
+
+  --green-dark: #01bf0c;
+  --green-darker: #007307;
+
+   /* RED – Error */
+  --red-light: #ffe6e9;
+  --red-light-hover: #ffd9de;
+  --red-light-active: #ffb0ba;
+
+  --red-normal: #ff0122;
+  --red-normal-hover: #e6011f;
+  --red-normal-active: #cc011b;
+
+  --red-dark: #bf011a;
+  --red-darker: #73000f;
+
+    /* GREY */
+  --grey-light: #f5f5f5;
+  --grey-light-hover: #f0f0f0;
+  --grey-light-active: #dfdfdf;
+
+  --grey-normal: #999999;
+  --grey-normal-hover: #8a8a8a;
+  --grey-normal-active: #7a7a7a;
+
+  --grey-dark: #737373;
+  --grey-dark-hover: #5c5c5c;
+  --grey-dark-active: #454545;
+
+  --grey-darker: #363636;
+}
+
+
+body {
+  margin: 0;
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+  background-color: #f5f7ff;
+  color: #0f172a;
+}
+
+/* Headings – Regular */
+h1 {
+  font-size: 56px;
+  font-weight: 400;
+}
+
+h2 {
+  font-size: 48px;
+  font-weight: 400;
+}
+
+h3 {
+  font-size: 40px;
+  font-weight: 400;
+}
+
+h4 {
+  font-size: 32px;
+  font-weight: 400;
+}
+
+h5 {
+  font-size: 24px;
+  font-weight: 400;
+}
+
+h6 {
+  font-size: 16px;
+  font-weight: 400;
+}

@@ -1,0 +1,38 @@
+.blog-card {
+  background: #ffffff;
+  border-radius: 14px;
+  overflow: hidden;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.05);
+  display: flex;
+  flex-direction: column;
+}
+
+.blog-card img {
+  width: 100%;
+  height: 180px;
+  object-fit: cover;
+}
+
+.blog-content {
+  padding: 1.2rem;
+}
+
+.meta {
+  font-size: 13px;
+  color: #666;
+  margin-bottom: 0.6rem;
+}
+
+.blog-card h3 {
+  font-size: 16px;
+  font-weight: 700;
+  margin-bottom: 1rem;
+  line-height: 1.4;
+}
+
+.read-more {
+  font-size: 14px;
+  font-weight: 600;
+  color: #0001ff;
+  text-decoration: none;
+}
