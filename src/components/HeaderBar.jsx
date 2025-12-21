@@ -13,7 +13,7 @@ export const HeaderBar = () => (
     </div>
 
     <div className="header-right">
-      <Link to="/signup" className="signup-btn">
+      <Link to="/Signup" className="signup-btn">
         Sign up
       </Link>
 

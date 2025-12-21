@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { FiEye, FiEyeOff } from "react-icons/fi";
-import "./signupForm.css";
-import signupIllustration from "../assets/Rectangle 84.png";
+import "./SignupForm.css";
+import signupIllustration from "../assets/Rectangle-84.png";
 import logo from "../assets/logo.png";
 import { Link } from "react-router-dom";
 
