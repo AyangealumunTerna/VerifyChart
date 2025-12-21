@@ -6,7 +6,13 @@ import logo from "../assets/logo.png";
 import { Link } from "react-router-dom";
 
 const Signup = () => {
+  const handleSubmit = (e) => {
+    e.preventDefault(); // 👈 stops page reload
+    console.log("Signup clicked");
+  };
+
   const [showPassword, setShowPassword] = useState(false);
+
   return (
     <div className="signup-page">
       {/* Header */}
@@ -36,7 +42,7 @@ const Signup = () => {
 
       {/* Form */}
       <section className="signup-form-wrapper">
-        <form className="signup-form">
+        <form className="signup-form" onSubmit={handleSubmit}>
           <div className="form-grid">
             <input type="text" placeholder="Business Name" />
             <input type="text" placeholder="Business Address" />
