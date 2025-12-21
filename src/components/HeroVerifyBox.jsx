@@ -46,7 +46,7 @@ export default function HeroVerifyBox() {
       {status === "scanning" && <VerificationResult />}
 
       {/* RESULT UI */}
-      {status === "verified" && <VerificationResult score={45} />}
+      {status === "verified" && <VerificationResult score={85} />}
     </section>
   );
 }
