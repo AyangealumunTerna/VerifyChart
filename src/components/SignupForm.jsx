@@ -83,7 +83,7 @@ const Signup = () => {
           </button>
 
           <p className="login-text">
-            Already have an account? <span>Log in</span>
+            Already have an account? <Link to="/admin/login">Log in</Link>
           </p>
         </form>
       </section>

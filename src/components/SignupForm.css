@@ -105,6 +105,8 @@
 .login-text {
   text-align: center;
   margin-top: 1rem;
+  font-weight: 600;
+  text-decoration: none;
 }
 
 .login-text span {
