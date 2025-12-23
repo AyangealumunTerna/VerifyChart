@@ -39,33 +39,33 @@ export default function AdminDashboard() {
         <div className="stats-grid">
           <div className="stat-card">
             <p>Pending</p>
-            <AnimatedCounter value={18} />
+            <AnimatedCounter value={0} />
           </div>
 
           <div className="stat-card">
             <p>Approved</p>
-            <AnimatedCounter value={18} />
+            <AnimatedCounter value={0} />
           </div>
 
           <div className="stat-card">
             <p>Rejected</p>
-            <AnimatedCounter value={18} />
+            <AnimatedCounter value={0} />
           </div>
 
           <div className="stat-card large">
             <p>Applications Today</p>
-            <AnimatedCounter value={18} />
+            <AnimatedCounter value={0} />
             <small>13 New • 19 in Review</small>
           </div>
 
           <div className="stat-card">
             <p>Average Review Time</p>
-            <AnimatedCounter value={18} />
+            <AnimatedCounter value={0} />
           </div>
 
           <div className="stat-card">
             <p>Open Complaints</p>
-            <AnimatedCounter value={18} />
+            <AnimatedCounter value={0} />
           </div>
         </div>
       </main>
