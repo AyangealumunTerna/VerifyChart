@@ -5,6 +5,20 @@ import "./EditVendorProfile.css";
 export default function EditVendorProfile() {
   const navigate = useNavigate();
 
+  const handleImage = (e, field) => {
+    const file = e.target.files[0];
+    if (!file) return;
+
+    const reader = new FileReader();
+    reader.onloadend = () => {
+      setFormData((prev) => ({
+        ...prev,
+        [field]: reader.result,
+      }));
+    };
+    reader.readAsDataURL(file);
+  };
+
   const [formData, setFormData] = useState(() => {
     const storedProfile = localStorage.getItem("vendorProfile");
     if (!storedProfile) return null;
@@ -34,7 +48,11 @@ export default function EditVendorProfile() {
 
   const handleSave = (e) => {
     e.preventDefault();
-    localStorage.setItem("vendorProfile", JSON.stringify(formData));
+
+    const existing = JSON.parse(localStorage.getItem("vendorProfile")) || {};
+    const updatedProfile = { ...existing, ...formData };
+
+    localStorage.setItem("vendorProfile", JSON.stringify(updatedProfile));
     navigate("/vendor/profile");
   };
 
@@ -72,6 +90,24 @@ export default function EditVendorProfile() {
             name="socialLink"
             value={formData.socialLink}
             onChange={handleChange}
+          />
+        </label>
+
+        <label>
+          Banner Image
+          <input
+            type="file"
+            accept="image/*"
+            onChange={(e) => handleImage(e, "bannerImage")}
+          />
+        </label>
+
+        <label>
+          Avatar Image
+          <input
+            type="file"
+            accept="image/*"
+            onChange={(e) => handleImage(e, "avatarImage")}
           />
         </label>
 
