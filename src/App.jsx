@@ -8,6 +8,7 @@ import ProtectedAdminRoute from "./components/admin/ProtectedAdminRoute";
 import { Navigate } from "react-router-dom";
 import VendorProfile from "./pages/vendor/VendorProfile";
 import ProtectedVendorRoute from "./components/vendor/ProtectedVendorRoute";
+import EditVendorProfile from "./pages/vendor/EditVendorProfile";
 
 export default function App() {
   return (
@@ -36,6 +37,14 @@ export default function App() {
           element={
             <ProtectedVendorRoute>
               <VendorProfile />
+            </ProtectedVendorRoute>
+          }
+        />
+        <Route
+          path="/vendor/edit-profile"
+          element={
+            <ProtectedVendorRoute>
+              <EditVendorProfile />
             </ProtectedVendorRoute>
           }
         />

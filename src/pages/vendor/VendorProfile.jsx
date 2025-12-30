@@ -3,6 +3,8 @@ import { useNavigate } from "react-router-dom";
 import { logout } from "../../components/utils/logout";
 import "./EditVendorProfile.jsx";
 import "./VendorProfile.css";
+import bannerImg from "../../assets/vendor-banner.jpg";
+import avatarImg from "../../assets/vendor-avatar.jpg";
 
 export default function VendorProfile() {
   const navigate = useNavigate();
@@ -30,72 +32,78 @@ export default function VendorProfile() {
   return (
     <div className="vendor-page">
       {/* Banner */}
-      <div className="vendor-banner">
-        <img src="/shoe-banner.jpg" alt="Vendor banner" />
-      </div>
+      <div className="vendor-header">
+        <img src={bannerImg} alt="Vendor banner" />
 
-      {/* Profile Card */}
-      <div className="vendor-card">
-        <div className="vendor-avatar">
-          <img src="/vendor-logo.png" alt="Vendor logo" />
-        </div>
-
-        <div className="vendor-main">
-          <div className="vendor-title">
-            <h2>{vendor.businessName}</h2>
-            <span className="verified-badge">Verified Vendor</span>
+        <div className="vendor-info-box">
+          <div className="vendor-avatar">
+            <img src={avatarImg} alt="Vendor logo" />
           </div>
 
-          <p className="vendor-description">
-            Your smart plug for premium quality footwears. We specialize in
-            classy shoes, sandals, sneakers and more.
-          </p>
+          <div className="vendor-main">
+            <div className="vendor-title">
+              <h2>{vendor.businessName}</h2>
+              <div className="verified-wrapper">
+                <span className="verified-dot">✔</span>
+                <span className="verified-tooltip">Verified Vendor</span>
+              </div>
+            </div>
 
-          {/* Stats */}
-          <div className="vendor-stats">
-            <div>
-              <strong>{vendor.followers / 1000}k</strong>
-              <span>Followers</span>
-            </div>
-            <div>
-              <strong>{vendor.following}</strong>
-              <span>Following</span>
-            </div>
-            <div>
-              <strong>{vendor.products}</strong>
-              <span>Products</span>
-            </div>
-            <div>
-              <strong>{vendor.sales}+</strong>
-              <span>Sales</span>
-            </div>
-            <div>
-              <strong>{vendor.rating}★</strong>
-              <span>Rating</span>
-            </div>
-          </div>
+            <p className="vendor-description">
+              Your smart plug for premium quality footwears. We specialize in
+              classy shoes, sandals, sneakers and more.
+            </p>
 
-          {/* Meta */}
-          <div className="vendor-meta">
-            <span>📍 {vendor.businessAddress}</span>
-            <span>🔗 {vendor.socialLink}</span>
-            <span>📅 Member since {vendor.memberSince}</span>
-          </div>
+            {/* Stats */}
+            <div className="vendor-stats">
+              <div>
+                <strong>{vendor.followers / 1000}k</strong>
+                <span>Followers</span>
+              </div>
+              <div>
+                <strong>{vendor.following}</strong>
+                <span>Following</span>
+              </div>
+              <div>
+                <strong>{vendor.products}</strong>
+                <span>Products</span>
+              </div>
+              <div>
+                <strong>{vendor.sales}+</strong>
+                <span>Sales</span>
+              </div>
+              <div>
+                <strong>{vendor.rating}★</strong>
+                <span>Rating</span>
+              </div>
+            </div>
 
-          {/* Actions */}
-          <div className="vendor-actions">
-            <button className="primary">Visit Shop</button>
-            <button>Message</button>
-            <button>Follow</button>
-          </div>
+            {/* Meta */}
+            <div className="vendor-meta">
+              <span>📍 {vendor.businessAddress}</span>
+              <span>🔗 {vendor.socialLink}</span>
+              <span>📅 Member since {vendor.memberSince}</span>
+            </div>
 
-          <div className="vendor-settings">
-            <button onClick={() => navigate("/vendor/edit-profile")}>
-              Edit Profile
-            </button>
-            <button className="logout" onClick={() => logout(navigate)}>
-              Logout
-            </button>
+            {/* Actions */}
+            <div className="vendor-actions">
+              <button className="primary">Visit Shop</button>
+              <button>Message</button>
+              <button>Follow</button>
+            </div>
+
+            <div className="vendor-settings">
+              <button
+                className="edit-btn"
+                onClick={() => navigate("/vendor/edit-profile")}
+              >
+                Edit Profile
+              </button>
+
+              <button className="logout-btn" onClick={() => logout(navigate)}>
+                Logout
+              </button>
+            </div>
           </div>
         </div>
       </div>
