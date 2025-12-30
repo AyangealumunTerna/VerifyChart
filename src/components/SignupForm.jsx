@@ -3,15 +3,62 @@ import { FiEye, FiEyeOff } from "react-icons/fi";
 import "./SignupForm.css";
 import signupIllustration from "../assets/Rectangle-84.png";
 import logo from "../assets/logo.png";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 const Signup = () => {
-  const handleSubmit = (e) => {
-    e.preventDefault(); // 👈 stops page reload
-    console.log("Signup clicked");
+  const navigate = useNavigate(); // ✅ inside component
+  const [showPassword, setShowPassword] = useState(false); // ✅ inside component
+  const [formData, setFormData] = useState({
+    businessName: "",
+    businessAddress: "",
+    ownerName: "",
+    nationalId: "",
+    email: "",
+    socialLink: "",
+    password: "",
+    phone: "",
+  });
+
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setFormData((prev) => ({
+      ...prev,
+      [name]: value,
+    }));
   };
 
-  const [showPassword, setShowPassword] = useState(false);
+  const handleSubmit = (e) => {
+    e.preventDefault();
+
+    // 1️⃣ Save AUTH details (for login)
+    const authData = {
+      role: "vendor",
+      email: formData.email,
+      password: formData.password,
+    };
+
+    // 2️⃣ Save VENDOR PROFILE details
+    const vendorProfile = {
+      businessName: formData.businessName,
+      businessAddress: formData.businessAddress,
+      ownerName: formData.ownerName,
+      nationalId: formData.nationalId,
+      socialLink: formData.socialLink,
+      phone: formData.phone,
+      memberSince: new Date().getFullYear(),
+      followers: 0,
+      following: 0,
+      products: 0,
+      sales: 0,
+      rating: 0,
+    };
+
+    localStorage.setItem("auth", JSON.stringify(authData));
+    localStorage.setItem("vendorProfile", JSON.stringify(vendorProfile));
+    localStorage.setItem("role", "vendor");
+
+    navigate("/vendor/profile");
+  };
 
   return (
     <div className="signup-page">
@@ -44,22 +91,69 @@ const Signup = () => {
       <section className="signup-form-wrapper">
         <form className="signup-form" onSubmit={handleSubmit}>
           <div className="form-grid">
-            <input type="text" placeholder="Business Name" />
-            <input type="text" placeholder="Business Address" />
+            <input
+              type="text"
+              name="businessName"
+              placeholder="Business Name"
+              value={formData.businessName}
+              onChange={handleChange}
+            />
 
-            <input type="text" placeholder="Name" />
-            <input type="text" placeholder="National ID" />
+            <input
+              type="text"
+              name="businessAddress"
+              placeholder="Business Address"
+              value={formData.businessAddress}
+              onChange={handleChange}
+            />
 
-            <input type="email" placeholder="Email" />
+            <input
+              type="text"
+              name="ownerName"
+              placeholder="Name"
+              value={formData.ownerName}
+              onChange={handleChange}
+            />
+
+            <input
+              type="text"
+              name="nationalId"
+              placeholder="National ID"
+              value={formData.nationalId}
+              onChange={handleChange}
+            />
+
+            <input
+              type="email"
+              name="email"
+              placeholder="Email"
+              value={formData.email}
+              onChange={handleChange}
+            />
+
             <input
               type="url"
+              name="socialLink"
               placeholder="Primary social media link (Required)"
+              value={formData.socialLink}
+              onChange={handleChange}
+            />
+
+            <input
+              type="tel"
+              name="phone"
+              placeholder="Phone"
+              value={formData.phone}
+              onChange={handleChange}
             />
 
             <div className="password-field">
               <input
                 type={showPassword ? "text" : "password"}
+                name="password"
                 placeholder="Password"
+                value={formData.password}
+                onChange={handleChange}
               />
 
               <span
@@ -69,8 +163,6 @@ const Signup = () => {
                 {showPassword ? <FiEyeOff /> : <FiEye />}
               </span>
             </div>
-
-            <input type="tel" placeholder="Phone" />
           </div>
 
           <label className="checkbox">
@@ -83,7 +175,7 @@ const Signup = () => {
           </button>
 
           <p className="login-text">
-            Already have an account? <Link to="/admin/login">Log in</Link>
+            Already have an account? <Link to="/login">Log in</Link>
           </p>
         </form>
       </section>

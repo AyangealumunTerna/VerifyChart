@@ -2,7 +2,7 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import "./Login.css";
 
-export default function AdminLogin() {
+export default function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
@@ -12,26 +12,29 @@ export default function AdminLogin() {
     e.preventDefault();
     setError("");
 
-    const fakeUserFromDB = {
-      email: "admin@verifycart.com",
-      password: "admin123",
-      role: "admin",
-    };
+    // 1️⃣ ADMIN LOGIN (hard-coded system user)
+    if (email === "admin@verifycart.com" && password === "admin123") {
+      localStorage.setItem("role", "admin");
+      navigate("/admin/dashboard");
+      return;
+    }
+
+    // 2️⃣ VENDOR LOGIN (from localStorage)
+    const auth = JSON.parse(localStorage.getItem("auth"));
 
     if (
-      email === fakeUserFromDB.email &&
-      password === fakeUserFromDB.password
+      auth &&
+      email === auth.email &&
+      password === auth.password &&
+      auth.role === "vendor"
     ) {
-      localStorage.setItem("role", fakeUserFromDB.role);
-
-      if (fakeUserFromDB.role === "admin") {
-        navigate("/admin/dashboard");
-      } else {
-        navigate("/");
-      }
-    } else {
-      setError("Invalid login details");
+      localStorage.setItem("role", "vendor");
+      navigate("/vendor/profile");
+      return;
     }
+
+    // 3️⃣ If nothing matches
+    setError("Invalid login details");
   };
 
   return (
@@ -39,7 +42,7 @@ export default function AdminLogin() {
       <button className="back-btn" onClick={() => navigate("/")}>
         ← Back to Home
       </button>
-      
+
       <div className="login-card">
         <h2>Login</h2>
         <p className="login-subtext">Access your VerifyCart dashboard</p>

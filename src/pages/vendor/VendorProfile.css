@@ -1,0 +1,101 @@
+.vendor-page {
+  background: #f6f8fb;
+  min-height: 100vh;
+}
+
+.vendor-banner img {
+  width: 100%;
+  height: 260px;
+  object-fit: cover;
+}
+
+.vendor-card {
+  max-width: 900px;
+  margin: -80px auto 40px;
+  background: #fff;
+  border-radius: 16px;
+  padding: 24px;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.08);
+}
+
+.vendor-avatar {
+  width: 120px;
+  height: 120px;
+  margin-top: -80px;
+}
+
+.vendor-avatar img {
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  border: 6px solid #fff;
+}
+
+.vendor-title {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.verified-badge {
+  background: #2563eb;
+  color: #fff;
+  padding: 4px 10px;
+  border-radius: 20px;
+  font-size: 12px;
+}
+
+.vendor-description {
+  margin: 10px 0 20px;
+  color: #555;
+}
+
+.vendor-stats {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 20px;
+}
+
+.vendor-stats div {
+  text-align: center;
+}
+
+.vendor-stats strong {
+  font-size: 18px;
+}
+
+.vendor-meta span {
+  display: block;
+  color: #555;
+  margin-bottom: 6px;
+}
+
+.vendor-actions {
+  display: flex;
+  gap: 12px;
+  margin: 20px 0;
+}
+
+.vendor-actions button {
+  flex: 1;
+  padding: 12px;
+  border-radius: 8px;
+  border: none;
+  cursor: pointer;
+}
+
+.vendor-actions .primary {
+  background: #1d4ed8;
+  color: #fff;
+}
+
+.vendor-settings {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 20px;
+}
+
+.vendor-settings .logout {
+  background: #ef4444;
+  color: #fff;
+}
