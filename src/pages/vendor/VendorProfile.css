@@ -128,6 +128,13 @@
   margin: auto 8px;
   vertical-align: middle;
 }
+
+.vendor-meta {
+  display: flex;
+  flex-direction: column;
+  flex-wrap: wrap;
+  gap: 6px;
+}
 .vendor-meta span {
   display: inline-flex;
   color: #555;
@@ -182,7 +189,7 @@
   display: grid;
   grid-template-columns: repeat(2, 1fr);
   gap: 16px;
-  flex-wrap: wrap;
+  margin: 0 auto;
 }
 
 .achievement-card {
@@ -294,6 +301,9 @@
     /* flex-wrap: nowrap; */
   }
 
+  .vendor-section {
+    padding: 0 8px;
+  }
   .vendor-actions {
     flex-direction: column;
   }
