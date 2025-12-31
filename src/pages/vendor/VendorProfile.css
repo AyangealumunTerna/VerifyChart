@@ -297,7 +297,8 @@
     display: flex;
     text-align: left;
     font-size: 14px;
-    padding-right: 10px;
+    max-width: 100%;
+    margin: 0 auto 0 0;
     /* flex-wrap: nowrap; */
   }
   .achievements-grid{
