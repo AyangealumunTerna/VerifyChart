@@ -189,7 +189,6 @@
   display: grid;
   grid-template-columns: repeat(2, 1fr);
   gap: 16px;
-  margin: 0 auto;
 }
 
 .achievement-card {
@@ -299,6 +298,9 @@
     text-align: left;
     font-size: 14px;
     /* flex-wrap: nowrap; */
+  }
+  .achievements-grid{
+    grid-template-columns: 1fr;
   }
 
   .vendor-section {
