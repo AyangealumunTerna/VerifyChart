@@ -5,7 +5,8 @@ import signupIllustration from "../assets/Rectangle-84.png";
 import logo from "../assets/logo.png";
 import { Link, useNavigate } from "react-router-dom";
 
-const Signup = () => {
+const Signup = (e) => {
+  e.preventDefault();
   const navigate = useNavigate(); // ✅ inside component
   const [showPassword, setShowPassword] = useState(false); // ✅ inside component
   const [formData, setFormData] = useState({

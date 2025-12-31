@@ -238,6 +238,9 @@
 }
 
 @media (max-width: 767px) {
+  .vendor-page {
+    padding: 0 2px;
+  }
   .vendor-header {
     max-width: 100%;
     margin: 0;
@@ -283,7 +286,7 @@
     margin-top: 16px;
   }
 
-  .vendor-meta span {
+  .vendor-meta span, .vendor-meta span a {
     display: flex;
     text-align: left;
     font-size: 14px;
