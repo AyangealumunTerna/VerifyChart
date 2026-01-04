@@ -3,12 +3,14 @@ import Signup from "./components/SignupForm.jsx";
 import Home from "./pages/Home";
 import "./components/styles/breakpoints.css";
 import AdminDashboard from "./components/admin/AdminDashboard";
-import AdminLogin from "./components/admin/Login.jsx";
+import Login from "./components/admin/Login.jsx";
 import ProtectedAdminRoute from "./components/admin/ProtectedAdminRoute";
 import { Navigate } from "react-router-dom";
 import VendorProfile from "./pages/vendor/VendorProfile";
 import ProtectedVendorRoute from "./components/vendor/ProtectedVendorRoute";
 import EditVendorProfile from "./pages/vendor/EditVendorProfile";
+import ForgotPassword from "./components/ForgotPassword.jsx";
+import ResetPassword from "./components/ResetPassword.jsx";
 
 export default function App() {
   return (
@@ -18,7 +20,7 @@ export default function App() {
         <Route path="/signup" element={<Signup />} />
 
         {/* SHARED LOGIN */}
-        <Route path="/login" element={<AdminLogin />} />
+        <Route path="/login" element={<Login />} />
 
         {/* ADMIN */}
         <Route
@@ -29,7 +31,7 @@ export default function App() {
             </ProtectedAdminRoute>
           }
         />
-        <Route path="/admin" element={<Navigate to="/login" replace />} />
+        {/* <Route path="/admin" element={<Navigate to="/login" replace />} /> */}
 
         {/* VENDOR */}
         <Route
@@ -40,6 +42,7 @@ export default function App() {
             </ProtectedVendorRoute>
           }
         />
+
         <Route
           path="/vendor/edit-profile"
           element={
@@ -48,6 +51,8 @@ export default function App() {
             </ProtectedVendorRoute>
           }
         />
+        <Route path="/forgot-password" element={<ForgotPassword />} />
+        <Route path="/reset-password" element={<ResetPassword />} />
       </Routes>
     </BrowserRouter>
   );

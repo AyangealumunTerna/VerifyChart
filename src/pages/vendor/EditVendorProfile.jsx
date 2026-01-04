@@ -5,55 +5,75 @@ import "./EditVendorProfile.css";
 export default function EditVendorProfile() {
   const navigate = useNavigate();
 
-  const handleImage = (e, field) => {
-    const file = e.target.files[0];
-    if (!file) return;
+  // const handleImage = (e, field) => {
+  //   const file = e.target.files[0];
+  //   if (!file) return;
 
-    const reader = new FileReader();
-    reader.onloadend = () => {
-      setFormData((prev) => ({
-        ...prev,
-        [field]: reader.result,
-      }));
-    };
-    reader.readAsDataURL(file);
-  };
+  //   const reader = new FileReader();
+  //   reader.onloadend = () => {
+  //     setFormData((prev) => ({
+  //       ...prev,
+  //       [field]: reader.result,
+  //     }));
+  //   };
+  //   reader.readAsDataURL(file);
+  // };
 
-  const [formData, setFormData] = useState(() => {
-    const storedProfile = localStorage.getItem("vendorProfile");
-    if (!storedProfile) return null;
-
-    try {
-      const profile = JSON.parse(storedProfile);
-      return {
-        businessName: profile.businessName || "",
-        businessAddress: profile.businessAddress || "",
-        phone: profile.phone || "",
-        socialLink: profile.socialLink || "",
-      };
-    } catch {
-      return null;
-    }
+  const [formData, setFormData] = useState({
+    businessName: "",
+    phone: "",
+    instagram: "",
+    whatsapp: "",
+    facebook: "",
+    website: "",
+    tiktok: "",
   });
-
-  if (!formData) {
-    navigate("/login", { replace: true });
-    return null;
-  }
 
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData((prev) => ({ ...prev, [name]: value }));
   };
 
-  const handleSave = (e) => {
+  const handleSave = async (e) => {
     e.preventDefault();
 
-    const existing = JSON.parse(localStorage.getItem("vendorProfile")) || {};
-    const updatedProfile = { ...existing, ...formData };
+    try {
+      const res = await fetch(
+        "https://verifycart.onrender.com/api/vendor/profile",
+        {
+          method: "PATCH",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          credentials: "include",
+          body: JSON.stringify({
+            businessName: formData.businessName,
+            phone: formData.phone,
+            socialLinks: {
+              instagram: formData.instagram,
+              whatsapp: formData.whatsapp,
+              facebook: formData.facebook,
+              website: formData.website,
+              tiktok: formData.tiktok,
+            },
+          }),
+        }
+      );
 
-    localStorage.setItem("vendorProfile", JSON.stringify(updatedProfile));
-    navigate("/vendor/profile");
+      const data = await res.json();
+
+      if (!res.ok) {
+        throw new Error(data.message || "Update failed");
+      }
+
+      // sync updated profile locally
+      localStorage.setItem("vendorProfile", JSON.stringify(data.vendor));
+
+      navigate("/vendor/profile");
+    } catch (error) {
+      console.error(error);
+      alert("Failed to update profile");
+    }
   };
 
   return (
@@ -71,43 +91,34 @@ export default function EditVendorProfile() {
         </label>
 
         <label>
-          Business Address
-          <input
-            name="businessAddress"
-            value={formData.businessAddress}
-            onChange={handleChange}
-          />
-        </label>
-
-        <label>
           Phone
           <input name="phone" value={formData.phone} onChange={handleChange} />
         </label>
 
         <label>
-          Social Link
+          Instagram
           <input
-            name="socialLink"
-            value={formData.socialLink}
+            name="instagram"
+            value={formData.instagram}
             onChange={handleChange}
           />
         </label>
 
         <label>
-          Banner Image
+          WhatsApp
           <input
-            type="file"
-            accept="image/*"
-            onChange={(e) => handleImage(e, "bannerImage")}
+            name="whatsapp"
+            value={formData.whatsapp}
+            onChange={handleChange}
           />
         </label>
 
         <label>
-          Avatar Image
+          Website
           <input
-            type="file"
-            accept="image/*"
-            onChange={(e) => handleImage(e, "avatarImage")}
+            name="website"
+            value={formData.website}
+            onChange={handleChange}
           />
         </label>
 

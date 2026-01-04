@@ -1,40 +1,47 @@
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
+import { loginVendor } from "../../services/vendorAuth";
+import { FiEye, FiEyeOff } from "react-icons/fi";
 import "./Login.css";
 
 export default function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [showPassword, setShowPassword] = useState(false);
   const [error, setError] = useState("");
+  const [loading, setLoading] = useState(false);
+
   const navigate = useNavigate();
 
-  const handleLogin = (e) => {
+  const handleLogin = async (e) => {
     e.preventDefault();
     setError("");
 
-    // 1️⃣ ADMIN LOGIN (hard-coded system user)
+    // 🔐 ADMIN LOGIN (hard-coded)
     if (email === "admin@verifycart.com" && password === "admin123") {
       localStorage.setItem("role", "admin");
-      navigate("/admin/dashboard");
+      navigate("/admin/dashboard", { replace: true });
       return;
     }
 
-    // 2️⃣ VENDOR LOGIN (from localStorage)
-    const auth = JSON.parse(localStorage.getItem("auth"));
+    try {
+      setLoading(true);
 
-    if (
-      auth &&
-      email === auth.email &&
-      password === auth.password &&
-      auth.role === "vendor"
-    ) {
+      const res = await loginVendor({ email, password });
+
+      localStorage.setItem("vendorId", res.vendorId);
       localStorage.setItem("role", "vendor");
-      navigate("/vendor/profile");
-      return;
-    }
 
-    // 3️⃣ If nothing matches
-    setError("Invalid login details");
+      navigate("/vendor/profile");
+    } catch (err) {
+      if (err.response?.status === 400) {
+        setError("Invalid email or password");
+      } else {
+        setError(err.response?.data?.message || "Login failed. Try again.");
+      }
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -58,15 +65,32 @@ export default function Login() {
             required
           />
 
-          <input
-            type="password"
-            placeholder="Password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            required
-          />
+          {/* PASSWORD WITH EYE TOGGLE */}
+          <div className="password-field">
+            <input
+              type={showPassword ? "text" : "password"}
+              placeholder="Password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              required
+            />
 
-          <button type="submit">Login</button>
+            <span
+              className="eye-icon"
+              onClick={() => setShowPassword((prev) => !prev)}
+            >
+              {showPassword ? <FiEyeOff /> : <FiEye />}
+            </span>
+          </div>
+
+          {/* FORGOT PASSWORD LINK */}
+          <div className="forgot-password">
+            <Link to="/forgot-password">Forgot password?</Link>
+          </div>
+
+          <button type="submit" disabled={loading}>
+            {loading ? "Logging in..." : "Login"}
+          </button>
         </form>
       </div>
     </div>

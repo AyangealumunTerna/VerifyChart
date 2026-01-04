@@ -1,11 +1,8 @@
 import logo from "../../assets/logo.png";
-import { NavLink, useNavigate } from "react-router-dom";
+import { NavLink } from "react-router-dom";
 import "./AdminSidebar.css";
-import { logout } from "../../components/utils/logout";
 
-export default function AdminSidebar({ isOpen, closeSidebar }) {
-  const navigate = useNavigate();
-
+export default function AdminSidebar({ isOpen, closeSidebar, onLogout }) {
   return (
     <aside className={`admin-sidebar ${isOpen ? "open" : ""}`}>
       <div className="sidebar-logo">
@@ -17,16 +14,15 @@ export default function AdminSidebar({ isOpen, closeSidebar }) {
 
       <nav className="sidebar-nav" onClick={closeSidebar}>
         <NavLink to="/admin/dashboard" end>Dashboard</NavLink>
-
         <NavLink to="/admin/monitoring">Real-Time Monitoring</NavLink>
         <NavLink to="/admin/devices">My Devices</NavLink>
         <NavLink to="/admin/assistant">AI Assistant</NavLink>
         <NavLink to="/admin/billing">Billing & Cost Overview</NavLink>
       </nav>
 
-      <button className="sidebar-logout" onClick={() => logout(navigate)}>
-                Logout
-              </button>
+      <button className="sidebar-logout" onClick={onLogout}>
+        Logout
+      </button>
     </aside>
   );
 }

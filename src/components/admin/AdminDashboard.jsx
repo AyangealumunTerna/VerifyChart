@@ -3,15 +3,17 @@ import { useNavigate } from "react-router-dom";
 import "./AdminDashboard.css";
 import AdminSidebar from "./AdminSidebar";
 import AdminTopbar from "./AdminTopbar";
-import AnimatedCounter from "./AnimatedCounter";
+import StatsGrid from "./StatsGrid/StatsGrid";
+import ApplicationsList from "./ApplicationsList";
+import RecentComplaints from "./RecentComplaints";
+import { logout as logoutUtil } from "../utils/logout";
 
 export default function AdminDashboard() {
   const navigate = useNavigate();
   const [sidebarOpen, setSidebarOpen] = useState(false);
 
-  const logout = () => {
-    localStorage.removeItem("role");
-    navigate("/admin/login");
+  const handleLogout = () => {
+    logoutUtil({ navigate });
   };
 
   return (
@@ -23,52 +25,34 @@ export default function AdminDashboard() {
       >
         ☰
       </button>
+      {sidebarOpen && (
+        <div
+          className="sidebar-backdrop"
+          onClick={() => setSidebarOpen(false)}
+        />
+      )}
 
       {/* SINGLE SIDEBAR */}
-      <AdminSidebar
-        onLogout={logout}
-        isOpen={sidebarOpen}
-        closeSidebar={() => setSidebarOpen(false)}
-      />
+      <div className="admin-layout">
+        <AdminSidebar
+          onLogout={handleLogout}
+          isOpen={sidebarOpen}
+          closeSidebar={() => setSidebarOpen(false)}
+        />
 
-      <main className="admin-main">
-        <AdminTopbar />
+        <main className="admin-main">
+          <AdminTopbar />
 
-        <h1 className="dashboard-title">Dashboard</h1>
+          <h1 className="dashboard-title">Merchant Dashboard</h1>
 
-        <div className="stats-grid">
-          <div className="stat-card">
-            <p>Pending</p>
-            <AnimatedCounter value={0} />
-          </div>
+          <StatsGrid />
 
-          <div className="stat-card">
-            <p>Approved</p>
-            <AnimatedCounter value={0} />
-          </div>
-
-          <div className="stat-card">
-            <p>Rejected</p>
-            <AnimatedCounter value={0} />
-          </div>
-
-          <div className="stat-card large">
-            <p>Applications Today</p>
-            <AnimatedCounter value={0} />
-            <small>13 New • 19 in Review</small>
-          </div>
-
-          <div className="stat-card">
-            <p>Average Review Time</p>
-            <AnimatedCounter value={0} />
-          </div>
-
-          <div className="stat-card">
-            <p>Open Complaints</p>
-            <AnimatedCounter value={0} />
-          </div>
-        </div>
-      </main>
+          <section className="dashboard-content">
+            <ApplicationsList />
+            <RecentComplaints />
+          </section>
+        </main>
+      </div>
     </div>
   );
 }

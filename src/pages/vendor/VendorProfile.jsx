@@ -1,43 +1,55 @@
-import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { logout } from "../../components/utils/logout";
-import "./EditVendorProfile.jsx";
 import "./VendorProfile.css";
 import bannerImg from "../../assets/vendor-banner.jpg";
 import avatarImg from "../../assets/vendor-avatar.jpg";
 import location from "../../assets/location.png";
 import link from "../../assets/link.png";
 import calendar from "../../assets/calendar.png";
+import { useEffect, useState } from "react";
+import axios from "axios";
 
 export default function VendorProfile() {
   const navigate = useNavigate();
-  const formatLink = (link) => {
-    if (!link) return "#";
-    return link.startsWith("http") ? link : `https://${link}`;
+  const [error, setError] = useState(false);
+
+  const formatLink = (url) => {
+    if (!url) return "#";
+    return url.startsWith("http") ? url : `https://${url}`;
   };
-  const [vendor] = useState(() => {
-    const role = localStorage.getItem("role");
-    const storedProfile = localStorage.getItem("vendorProfile");
 
-    if (role !== "vendor" || !storedProfile) {
-      return null;
+  const [vendor, setVendor] = useState(null);
+
+  useEffect(() => {
+    const vendorId = localStorage.getItem("vendorId");
+
+    if (!vendorId) {
+      setError(true);
+      return;
     }
 
-    try {
-      return JSON.parse(storedProfile);
-    } catch {
-      return null;
-    }
-  });
+    axios
+      .get(`https://verifycart.onrender.com/api/vendor/summary/${vendorId}`, {
+        withCredentials: true,
+      })
+      .then((res) => {
+        setVendor(res.data.vendor);
+      })
+      .catch(() => {
+        setError(true);
+      });
+  }, []);
 
-  if (!vendor) {
-    navigate("/login", { replace: true });
-    return null;
+  if (error) {
+    return <p style={{ padding: "2rem" }}>Profile not available yet</p>;
   }
-
+  if (!vendor && !error) {
+    return <p style={{ padding: "2rem" }}>Loading profile...</p>;
+  }
+  const primaryLink = vendor?.socialLinks?.website;
+  const secondaryLink = vendor?.socialLinks?.instagram;
   return (
     <div className="vendor-page">
-      {/* Banner */}
       <div className="vendor-header">
         <img
           src={vendor.bannerImage || bannerImg}
@@ -52,7 +64,7 @@ export default function VendorProfile() {
 
           <div className="vendor-main">
             <div className="vendor-title">
-              <h2>{vendor.businessName}</h2>
+              <h2>{vendor.businessName || vendor.shopName || "My Shop"}</h2>
               <div className="verified-wrapper">
                 <span className="verified-dot">✔</span>
                 <span className="verified-tooltip">Verified Vendor</span>
@@ -60,22 +72,20 @@ export default function VendorProfile() {
             </div>
 
             <p className="vendor-description">
-              Your smart plug for premium quality footwears. We specialize in
-              classy shoes, sandals, sneakers and more.
+              Your smart plug for premium quality footwears.
             </p>
 
-            {/* Stats */}
             <div className="vendor-stats">
               <div>
-                <strong>{vendor.followers / 1000}k</strong>
+                <strong>{vendor.followers ?? 0}</strong>
                 <p>Followers</p>
               </div>
               <div>
-                <strong>{vendor.following}</strong>
+                <strong>{vendor.following ?? 0}</strong>
                 <p>Following</p>
               </div>
               <div>
-                <strong>{vendor.products}</strong>
+                <strong>{vendor.products ?? 0}</strong>
                 <p>Products</p>
               </div>
               <div>
@@ -83,38 +93,46 @@ export default function VendorProfile() {
                 <p>Sales</p>
               </div>
               <div>
-                <strong>{vendor.rating}★</strong>
+                <strong>{vendor.rating ?? 0}★</strong>
                 <p>Rating</p>
               </div>
             </div>
 
-            {/* Meta */}
             <div className="vendor-meta">
               <span>
-                <img src={location} alt="Location icon" id="icons" />{" "}
-                {vendor.businessAddress}
-              </span>{" "}
-              <br />
+                <img src={location} alt="" id="icons" />
+                {vendor.businessAddress || "No address set"}
+              </span>
+              
               <span>
                 <a
-                  href={formatLink(vendor.socialLink)}
+                  href={formatLink(primaryLink)}
                   target="_blank"
                   rel="noopener noreferrer"
                   id="vendor-link"
                 >
-                  <span>
-                    <img src={link} alt="Location icon" id="icons" />
-                  </span>{" "}
-                  {vendor.socialLink}
+                  <img src={link} alt="" id="icons" />
+                  {primaryLink}
                 </a>
               </span>
-              <br />
+
               <span>
-                <img src={calendar} alt="Location icon" id="icons" /> Member
-                since {vendor.memberSince}
+                <a
+                  href={formatLink(secondaryLink)}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  id="vendor-link"
+                >
+                  <img src={link} alt="" id="icons" />
+                  {secondaryLink}
+                </a>
+              </span>
+
+              <span>
+                <img src={calendar} alt="" id="icons" />
+                Member since {vendor.createdAt?.slice(0, 10)}
               </span>
             </div>
-
             {/* Actions */}
             <div className="vendor-actions">
               <button className="primary">Visit Shop</button>
@@ -172,13 +190,15 @@ export default function VendorProfile() {
 
             <div className="vendor-settings">
               <button
-                className="edit-btn"
                 onClick={() => navigate("/vendor/edit-profile")}
+                className="edit-btn"
               >
                 Edit Profile
               </button>
-
-              <button className="logout-btn" onClick={() => logout(navigate)}>
+              <button
+                onClick={() => logout(navigate, setVendor)}
+                className="logout-btn"
+              >
                 Logout
               </button>
             </div>

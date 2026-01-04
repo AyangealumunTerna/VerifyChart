@@ -140,13 +140,14 @@
   color: #555;
   margin: 6px 0;
 }
-.vendor-meta span a {
+.vendor-meta span #vendor-link{
+  display: inline-flex;
   color: #2563eb;
   text-decoration: none;
   font-weight: 500;
 }
 
-.vendor-meta span a:hover {
+.vendor-meta span #vendor-link:hover {
   text-decoration: underline;
 }
 .vendor-actions {
@@ -206,7 +207,7 @@
 }
 
 .policies {
-  font-size: 14px;
+  font-size: 15px;
   color: #444;
 }
 #policy-p {
@@ -262,7 +263,7 @@
     flex-direction: column;
     align-items: center;
     text-align: center;
-    padding: 20px;
+    padding: 10px;
   }
 
   .vendor-avatar {
@@ -293,13 +294,13 @@
     margin-top: 16px;
   }
 
-  .vendor-meta span, .vendor-meta span a {
+  .vendor-meta span, .vendor-meta span #vendor-link {
     display: flex;
     text-align: left;
     font-size: 14px;
     max-width: 100%;
     margin: 0 auto 0 0;
-    /* flex-wrap: nowrap; */
+    /* flex-wrap: wrap; */
   }
   .achievements-grid{
     grid-template-columns: 1fr;

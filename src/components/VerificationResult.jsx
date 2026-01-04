@@ -1,17 +1,17 @@
 import "./VerificationResult.css";
 
-export default function VerificationResult({ score }) {
+export default function VerificationResult({ score, vendor }) {
   const getScoreClass = () => {
     if (score >= 80) return "score-green";
     if (score >= 50) return "score-yellow";
     return "score-red";
   };
 
-  const verifiedBg= () => {
+  const verifiedBg = () => {
     if (score >= 80) return "verified-green-bg";
     if (score >= 50) return "verified-yellow-bg";
     return "verified-red-bg";
-  }
+  };
 
   const scoreClass = getScoreClass();
   const verifiedBgClass = verifiedBg();
@@ -23,8 +23,8 @@ export default function VerificationResult({ score }) {
           <div className="verified-icon">✔</div>
           <div>
             <h3>Verified Vendor</h3>
-            <p>Jane Forever Wears</p>
-            <span>Instagram Account</span>
+            <p>{vendor?.businessName || "Unknown Vendor"}</p>
+            <span>{vendor?.platform || "Social Media Account"}</span>
           </div>
         </div>
 
@@ -37,16 +37,29 @@ export default function VerificationResult({ score }) {
       <h4>Social Media Account Information</h4>
 
       <ul className="info-list">
-        <li><span>Age of Account</span><span>2 years 4 months</span></li>
-        <li><span>Popularity</span><span>Very Popular</span></li>
-        <li><span>Followers</span><span>50.5k</span></li>
-        <li><span>Threats Detected</span><span>No Threats</span></li>
-        <li><span>Review Score</span><span>4.9 / 5.0</span></li>
+        <li>
+          <span>Age of Account</span>
+          <span>2 years 4 months</span>
+        </li>
+        <li>
+          <span>Popularity</span>
+          <span>Very Popular</span>
+        </li>
+        <li>
+          <span>Followers</span>
+           <span>{vendor?.followers ?? "Not available"}</span>
+        </li>
+        <li>
+          <span>Threats Detected</span>
+          <span>No Threats</span>
+        </li>
+        <li>
+          <span>Review Score</span>
+          <span>4.9 / 5.0</span>
+        </li>
       </ul>
 
-      <div className="platform-badge">
-        Platform Verified Badge
-      </div>
+      <div className="platform-badge">Platform Verified Badge</div>
 
       <h4 id="positive">Positive Highlights</h4>
 
@@ -59,7 +72,12 @@ export default function VerificationResult({ score }) {
       </ul>
 
       <div className="action-buttons">
-        <button className="secondary">Visit Social media handle</button>
+        <button
+          className="secondary"
+          onClick={() => window.open(vendor?.socialLinks?.instagram, "_blank")}
+        >
+          Visit Social Media Handle
+        </button>{" "}
         <button className="danger">Report Issue</button>
       </div>
     </div>

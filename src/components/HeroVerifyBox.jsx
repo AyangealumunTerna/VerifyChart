@@ -1,23 +1,78 @@
 import { useState } from "react";
 import "./HeroVerifyBox.css";
 import VerificationResult from "./VerificationResult";
-
+import axios from "axios";
 
 export default function HeroVerifyBox() {
   const [handle, setHandle] = useState("");
   const [status, setStatus] = useState("idle"); // idle | scanning | verified
+  const [result, setResult] = useState(null);
+  const [error, setError] = useState(null);
 
   const isActive = handle.trim().length > 0;
 
-  const handleSubmit = (e) => {
+  const extractQuery = (input) => {
+    let value = input.trim();
+
+    // Remove protocol
+    value = value.replace(/^https?:\/\//, "");
+
+    // Remove www.
+    value = value.replace(/^www\./, "");
+
+    // Remove domain paths (instagram, linkedin, twitter, etc)
+    value = value
+      .replace(/instagram\.com\//, "")
+      .replace(/linkedin\.com\/in\//, "")
+      .replace(/twitter\.com\//, "")
+      .replace(/facebook\.com\//, "");
+
+    // Remove trailing slash
+    value = value.replace(/\/$/, "");
+
+    // Remove @ if present
+    value = value.replace(/^@/, "");
+
+    return value;
+  };
+
+  const handleSubmit = async (e) => {
     e.preventDefault();
     if (!isActive) return;
 
     setStatus("scanning");
+    setError(null);
+    setResult(null);
 
-    setTimeout(() => {
-      setStatus("verified");
-    }, 2500);
+    const query = extractQuery(handle);
+
+    try {
+      const res = await axios.get(
+        `https://verifycart.onrender.com/api/vendor/search?q=${query}`
+      );
+
+      if (res.data.count > 0) {
+        setResult(res.data.results[0]);
+        setStatus("verified");
+      } else {
+        setStatus("idle");
+        setError("Vendor not found in our database");
+      }
+    } catch (err) {
+      const statusCode = err.response?.status;
+
+      console.log("SEARCH QUERY:", query);
+      console.log("API status:", statusCode);
+
+      setStatus("idle");
+      setResult(null);
+
+      if (statusCode === 404) {
+        setError("Vendor not found in our database");
+      } else {
+        setError("Something went wrong. Please try again.");
+      }
+    }
   };
 
   return (
@@ -46,7 +101,11 @@ export default function HeroVerifyBox() {
       {status === "scanning" && <VerificationResult />}
 
       {/* RESULT UI */}
-      {status === "verified" && <VerificationResult score={85} />}
+      {status === "verified" && result && (
+        <VerificationResult score={90} vendor={result} />
+      )}
+
+      {error && <p className="error-text">{error}</p>}
     </section>
   );
 }

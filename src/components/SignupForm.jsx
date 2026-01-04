@@ -4,60 +4,117 @@ import "./SignupForm.css";
 import signupIllustration from "../assets/Rectangle-84.png";
 import logo from "../assets/logo.png";
 import { Link, useNavigate } from "react-router-dom";
+import { registerVendor } from "../services/vendorAuth";
 
 const Signup = () => {
+  const [errors, setErrors] = useState({});
+  const [loading, setLoading] = useState(false);
+  const [generalError, setGeneralError] = useState("");
+
   const navigate = useNavigate(); // ✅ inside component
   const [showPassword, setShowPassword] = useState(false); // ✅ inside component
   const [formData, setFormData] = useState({
     businessName: "",
     businessAddress: "",
     ownerName: "",
-    nationalId: "",
     email: "",
     socialLink: "",
+    secondaryLink: "",
     password: "",
     phone: "",
   });
 
+  const [certified, setCertified] = useState(false);
+
   const handleChange = (e) => {
     const { name, value } = e.target;
+
     setFormData((prev) => ({
       ...prev,
       [name]: value,
     }));
+
+    setErrors((prev) => ({
+      ...prev,
+      [name]: "",
+    }));
+
+    setGeneralError("");
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
+    setErrors({});
+    setGeneralError("");
 
-    // 1️⃣ Save AUTH details (for login)
-    const authData = {
-      role: "vendor",
-      email: formData.email,
-      password: formData.password,
-    };
+    if (!certified) {
+      setGeneralError("You must certify the information before signing up.");
+      return;
+    }
 
-    // 2️⃣ Save VENDOR PROFILE details
-    const vendorProfile = {
-      businessName: formData.businessName,
-      businessAddress: formData.businessAddress,
-      ownerName: formData.ownerName,
-      nationalId: formData.nationalId,
-      socialLink: formData.socialLink,
-      phone: formData.phone,
-      memberSince: new Date().getFullYear(),
-      followers: 0,
-      following: 0,
-      products: 0,
-      sales: 0,
-      rating: 0,
-    };
+    const newErrors = {};
 
-    localStorage.setItem("auth", JSON.stringify(authData));
-    localStorage.setItem("vendorProfile", JSON.stringify(vendorProfile));
-    localStorage.setItem("role", "vendor");
+    if (formData.password.length < 8) {
+      newErrors.password = "Password must be at least 8 characters";
+    }
 
-    navigate("/vendor/profile");
+    if (!/[@$!%*?&]/.test(formData.password)) {
+      newErrors.password =
+        "Password must contain at least one special character (@$!%*?&)";
+    }
+
+    if (formData.phone.length < 10) {
+      newErrors.phone = "Enter a valid phone number";
+    }
+
+    if (!formData.email.includes("@")) {
+      newErrors.email = "Enter a valid email address";
+    }
+
+    if (Object.keys(newErrors).length > 0) {
+      setErrors(newErrors);
+      return;
+    }
+
+    try {
+      setLoading(true);
+
+      const payload = {
+        name: formData.ownerName.trim(),
+        email: formData.email.trim(),
+        phone: formData.phone.trim(),
+        password: formData.password.trim(),
+        businessName: formData.businessName.trim(),
+        businessAddress: formData.businessAddress.trim(),
+        socialLinks: {
+          website: formData.socialLink.trim(),
+          instagram: formData.secondaryLink?.trim() || undefined,
+        },
+      };
+
+      await registerVendor(payload);
+
+      navigate("/login");
+    } catch (err) {
+      const data = err.response?.data;
+
+      // 🔥 EMAIL ALREADY EXISTS
+      if (data?.message?.toLowerCase().includes("email")) {
+        setErrors({ email: data.message });
+      }
+      // 🔥 BACKEND VALIDATION ERRORS
+      else if (data?.errors?.length) {
+        const backendErrors = {};
+        data.errors.forEach((e) => {
+          backendErrors[e.field || "general"] = e.message;
+        });
+        setErrors(backendErrors);
+      } else {
+        setGeneralError(data?.message || "Signup failed. Try again.");
+      }
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -115,13 +172,13 @@ const Signup = () => {
               onChange={handleChange}
             />
 
-            <input
+            {/* <input
               type="text"
               name="nationalId"
               placeholder="National ID"
               value={formData.nationalId}
               onChange={handleChange}
-            />
+            /> */}
 
             <input
               type="email"
@@ -130,12 +187,20 @@ const Signup = () => {
               value={formData.email}
               onChange={handleChange}
             />
+            {errors.email && <p className="error-text">{errors.email}</p>}
 
             <input
               type="url"
               name="socialLink"
               placeholder="Primary social media link (Required)"
               value={formData.socialLink}
+              onChange={handleChange}
+            />
+            <input
+              type="url"
+              name="secondaryLink"
+              placeholder="Secondary social link (Optional)"
+              value={formData.secondaryLink}
               onChange={handleChange}
             />
 
@@ -146,6 +211,7 @@ const Signup = () => {
               value={formData.phone}
               onChange={handleChange}
             />
+            {errors.phone && <p className="error-text">{errors.phone}</p>}
 
             <div className="password-field">
               <input
@@ -155,7 +221,6 @@ const Signup = () => {
                 value={formData.password}
                 onChange={handleChange}
               />
-
               <span
                 className="toggle-password"
                 onClick={() => setShowPassword(!showPassword)}
@@ -163,20 +228,31 @@ const Signup = () => {
                 {showPassword ? <FiEyeOff /> : <FiEye />}
               </span>
             </div>
+            {errors.password && <p className="error-text">{errors.password}</p>}
           </div>
-
           <label className="checkbox">
-            <input type="checkbox" />I certify that the information provided is
-            accurate and I am authorized to apply for verification
+            <input
+              type="checkbox"
+              checked={certified}
+              onChange={(e) => setCertified(e.target.checked)}
+              required
+            />
+            I certify that the information provided is accurate and I am
+            authorized to apply for verification
           </label>
 
-          <button type="submit" className="btn-primary">
-            Sign Up
+          <button
+            type="submit"
+            className="btn-primary"
+            disabled={!certified || loading}
+          >
+            {loading ? "Signing up..." : "Sign Up"}
           </button>
 
           <p className="login-text">
             Already have an account? <Link to="/login">Log in</Link>
           </p>
+          {generalError && <p className="error-text">{generalError}</p>}
         </form>
       </section>
     </div>
