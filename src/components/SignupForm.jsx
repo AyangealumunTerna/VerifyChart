@@ -13,6 +13,7 @@ const Signup = () => {
 
   const navigate = useNavigate(); // ✅ inside component
   const [showPassword, setShowPassword] = useState(false); // ✅ inside component
+
   const [formData, setFormData] = useState({
     businessName: "",
     businessAddress: "",
@@ -79,17 +80,28 @@ const Signup = () => {
     try {
       setLoading(true);
 
+      // ✅ NORMALIZE URLS SAFELY
+      const normalizeUrl = (url) =>
+        url.startsWith("http") ? url : `https://${url}`;
+
+      // ✅ BUILD SOCIAL LINKS CLEANLY
+      const socialLinks = {
+        website: normalizeUrl(formData.socialLink.trim()),
+      };
+
+      if (formData.secondaryLink.trim()) {
+        socialLinks.instagram = normalizeUrl(formData.secondaryLink.trim());
+      }
+
+      // ✅ FINAL PAYLOAD
       const payload = {
         name: formData.ownerName.trim(),
         email: formData.email.trim(),
-        phone: formData.phone.trim(),
+        phone: formData.phone.replace(/\D/g, ""), // 🔥 important
         password: formData.password.trim(),
         businessName: formData.businessName.trim(),
         businessAddress: formData.businessAddress.trim(),
-        socialLinks: {
-          website: formData.socialLink.trim(),
-          instagram: formData.secondaryLink?.trim() || undefined,
-        },
+        socialLinks,
       };
 
       await registerVendor(payload);
@@ -98,12 +110,9 @@ const Signup = () => {
     } catch (err) {
       const data = err.response?.data;
 
-      // 🔥 EMAIL ALREADY EXISTS
       if (data?.message?.toLowerCase().includes("email")) {
         setErrors({ email: data.message });
-      }
-      // 🔥 BACKEND VALIDATION ERRORS
-      else if (data?.errors?.length) {
+      } else if (data?.errors?.length) {
         const backendErrors = {};
         data.errors.forEach((e) => {
           backendErrors[e.field || "general"] = e.message;
