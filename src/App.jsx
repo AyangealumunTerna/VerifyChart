@@ -11,6 +11,8 @@ import ProtectedVendorRoute from "./components/vendor/ProtectedVendorRoute";
 import EditVendorProfile from "./pages/vendor/EditVendorProfile";
 import ForgotPassword from "./components/ForgotPassword.jsx";
 import ResetPassword from "./components/ResetPassword.jsx";
+import RequestReset from "./components/RequestReset.jsx";
+
 
 export default function App() {
   return (
@@ -53,6 +55,7 @@ export default function App() {
         />
         <Route path="/forgot-password" element={<ForgotPassword />} />
         <Route path="/reset-password" element={<ResetPassword />} />
+        <Route path="/request-reset" element={<RequestReset />} />
       </Routes>
     </BrowserRouter>
   );

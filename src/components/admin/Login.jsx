@@ -85,7 +85,7 @@ export default function Login() {
 
           {/* FORGOT PASSWORD LINK */}
           <div className="forgot-password">
-            <Link to="/forgot-password">Forgot password?</Link>
+            <Link to="/request-reset">Forgot password?</Link>
           </div>
 
           <button type="submit" disabled={loading}>
