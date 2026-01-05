@@ -1,4 +1,5 @@
 import { formatLink } from "./utils/formatLink";
+import "../pages/vendor/VendorProfile.css";
 
 export default function VendorLink({ href, icon, label }) {
   if (!href) return null;
@@ -10,8 +11,9 @@ export default function VendorLink({ href, icon, label }) {
         target="_blank"
         rel="noopener noreferrer"
         className="vendor-link"
+        id="vendor-link"
       >
-        <img src={icon} alt="" className="vendor-icon" />
+        <img src={icon} alt="" className="vendor-icon" id="icons"/>
         {label || href}
       </a>
     </span>
