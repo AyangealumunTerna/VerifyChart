@@ -25,7 +25,7 @@
   background: #fff6d6;
   color: #946200;
 }
-.verified-red-bg {  
+.verified-red-bg {
   background: #ffe8e8;
   color: #b42318;
 }
@@ -151,12 +151,12 @@
 }
 
 /* Dynamic highlight colors */
-.highlights.score-green li {
+/* .highlights.score-green li {
   background: #eaffea;
   color: #1a7f37;
-}
+} */
 
-.highlights.score-yellow li {
+/* .highlights.score-yellow li {
   background: #fff6d6;
   color: #946200;
 }
@@ -164,8 +164,22 @@
 .highlights.score-red li {
   background: #ffe8e8;
   color: #b42318;
+} */
+.highlights-positive li {
+  background: #eaffea;
+  color: #1a7f37;
+  color: #1e7e34;
 }
 
+.highlights-warning li {
+  background: #eaffea;
+  color: #946200;
+}
+
+.highlights-danger li {
+  background: #ffe8e8;
+  color: #b42318;
+}
 
 /* ================= ACTION BUTTONS ================= */
 .action-buttons {

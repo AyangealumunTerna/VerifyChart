@@ -31,17 +31,72 @@ export default function VerificationResult({ vendor }) {
     return "verified-red-bg";
   };
 
+  const getVendorStatusText = () => {
+    if (score >= 80) return "Verified Vendor";
+    if (score >= 50) return "Vendor Requires Caution";
+    return "High-Risk Vendor";
+  };
+  const getStatusIcon = () => {
+    if (score >= 80) return "✔";
+    if (score >= 50) return "⚠";
+    return "✖";
+  };
+
   const scoreClass = getScoreClass();
   const verifiedBgClass = verifiedBg();
+  const getHighlightConfig = () => {
+    if (score >= 80) {
+      return {
+        title: "Positive Highlights",
+        className: "highlights-positive",
+        items: [
+          "Platform verified account",
+          "Strong engagement and traffic",
+          "Positive customer reviews",
+          "Consistent posting history",
+          "Secure payment methods detected",
+        ],
+      };
+    }
+
+    if (score >= 50) {
+      return {
+        title: "⚠️ Warning Signals",
+        className: "highlights-warning",
+        items: [
+          "Limited engagement on recent posts",
+          "Inconsistent posting activity",
+          "Few verifiable customer reviews",
+          "Account details partially verified",
+          "Proceed with caution before payment",
+        ],
+      };
+    }
+
+    return {
+      title: "🚨 Risk Indicators",
+      className: "highlights-danger",
+      items: [
+        "Low trust score detected",
+        "Unverified or suspicious account activity",
+        "Negative or missing customer reviews",
+        "High risk of impersonation or fraud",
+        "Avoid making payments to this vendor",
+      ],
+    };
+  };
+
+  const highlightConfig = getHighlightConfig();
+
   console.log("Vendor data:", vendor);
 
   return (
     <div className="verification-result">
       <div className={`verified-banner ${verifiedBgClass}`}>
         <div className="vendor-info">
-          <div className="verified-icon">✔</div>
+          <div className="verified-icon">{getStatusIcon()}</div>
           <div>
-            <h3>Verified Vendor</h3>
+            <h3>{getVendorStatusText()}</h3>
             <p>{vendor?.businessName || "Unknown Vendor"}</p>
             <span>{vendor?.platform || "Social Media Account"}</span>
           </div>
@@ -80,14 +135,12 @@ export default function VerificationResult({ vendor }) {
 
       <div className="platform-badge">Platform Verified Badge</div>
 
-      <h4 id="positive">Positive Highlights</h4>
+      <h4>{highlightConfig.title}</h4>
 
-      <ul className={`highlights ${scoreClass}`}>
-        <li>Platform verified account</li>
-        <li>Lots of traffic</li>
-        <li>Positive customer reviews</li>
-        <li>Consistent posting history</li>
-        <li>Secure payment methods</li>
+      <ul className={`highlights ${highlightConfig.className}`}>
+        {highlightConfig.items.map((item, index) => (
+          <li key={index}>{item}</li>
+        ))}
       </ul>
 
       <div className="action-buttons">
