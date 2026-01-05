@@ -8,15 +8,13 @@ import link from "../../assets/link.png";
 import calendar from "../../assets/calendar.png";
 import { useEffect, useState } from "react";
 import axios from "axios";
+import VendorLink from "../../components/VendorLink";
+import { formatLink } from "../../components/utils/formatLink";
+
 
 export default function VendorProfile() {
   const navigate = useNavigate();
   const [error, setError] = useState(false);
-
-  const formatLink = (url) => {
-    if (!url) return "#";
-    return url.startsWith("http") ? url : `https://${url}`;
-  };
 
   const [vendor, setVendor] = useState(null);
 
@@ -46,8 +44,22 @@ export default function VendorProfile() {
   if (!vendor && !error) {
     return <p style={{ padding: "2rem" }}>Loading profile...</p>;
   }
-  const primaryLink = vendor?.socialLinks?.website;
-  const secondaryLink = vendor?.socialLinks?.instagram;
+  // const primaryLink = vendor?.socialLinks?.website;
+  // const secondaryLink = vendor?.socialLinks?.instagram;
+  const getShopLink = () => {
+    return (
+      vendor?.socialLinks?.website ||
+      vendor?.socialLinks?.instagram ||
+      vendor?.socialLinks?.linkedin ||
+      null
+    );
+  };
+  const getVisitShopLabel = () => {
+    if (vendor?.socialLinks?.website) return "Visit Website";
+    if (vendor?.socialLinks?.instagram) return "Visit Instagram Shop";
+    return "Shop Unavailable";
+  };
+
   return (
     <div className="vendor-page">
       <div className="vendor-header">
@@ -103,30 +115,24 @@ export default function VendorProfile() {
                 <img src={location} alt="" id="icons" />
                 {vendor.businessAddress || "No address set"}
               </span>
-              
-              <span>
-                <a
-                  href={formatLink(primaryLink)}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  id="vendor-link"
-                >
-                  <img src={link} alt="" id="icons" />
-                  {primaryLink}
-                </a>
-              </span>
 
-              <span>
-                <a
-                  href={formatLink(secondaryLink)}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  id="vendor-link"
-                >
-                  <img src={link} alt="" id="icons" />
-                  {secondaryLink}
-                </a>
-              </span>
+              <VendorLink
+                href={vendor?.socialLinks?.website}
+                icon={link}
+                label="Official Website"
+              />
+
+              <VendorLink
+                href={vendor?.socialLinks?.instagram}
+                icon={link}
+                label="Instagram Page"
+              />
+
+              <VendorLink
+                href={vendor?.socialLinks?.linkedin}
+                icon={link}
+                label="LinkedIn Profile"
+              />
 
               <span>
                 <img src={calendar} alt="" id="icons" />
@@ -135,7 +141,22 @@ export default function VendorProfile() {
             </div>
             {/* Actions */}
             <div className="vendor-actions">
-              <button className="primary">Visit Shop</button>
+              <button
+                className="primary"
+                disabled={!getShopLink()}
+                onClick={() => {
+                  const link = getShopLink();
+                  if (!link) return;
+                  window.open(
+                    formatLink(link),
+                    "_blank",
+                    "noopener,noreferrer"
+                  );
+                }}
+              >
+                {getVisitShopLabel()}
+              </button>
+
               <button>Message</button>
               <button>Follow</button>
             </div>
