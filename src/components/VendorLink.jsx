@@ -1,4 +1,4 @@
-import { formatLink } from "../utils/formatLink";
+import { formatLink } from "./utils/formatLink";
 
 export default function VendorLink({ href, icon, label }) {
   if (!href) return null;
