@@ -102,9 +102,9 @@ export default function HeroVerifyBox() {
 
       {/* RESULT UI */}
       {status === "verified" && result && (
-        <VerificationResult score={90} vendor={result} />
+        <VerificationResult /* score={90} */ vendor={result} />
       )}
-
+{/* score={90} */}
       {error && <p className="error-text">{error}</p>}
     </section>
   );

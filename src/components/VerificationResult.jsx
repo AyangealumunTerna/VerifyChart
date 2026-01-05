@@ -1,10 +1,28 @@
 import "./VerificationResult.css";
 
-export default function VerificationResult({ score, vendor }) {
+export default function VerificationResult({ vendor }) {
+  const score = Number(vendor?.trustScore ?? 0);
+
   const getScoreClass = () => {
     if (score >= 80) return "score-green";
     if (score >= 50) return "score-yellow";
     return "score-red";
+  };
+  const socialLink =
+    vendor?.socialLinks?.instagram ||
+    vendor?.socialLinks?.website ||
+    vendor?.socialLinks?.linkedin ||
+    null;
+
+  const openSocialLink = (value) => {
+    if (!value) {
+      alert("Social media link not available");
+      return;
+    }
+
+    const url = value.startsWith("http") ? value : `https://${value}`;
+
+    window.open(url, "_blank", "noopener,noreferrer");
   };
 
   const verifiedBg = () => {
@@ -15,6 +33,7 @@ export default function VerificationResult({ score, vendor }) {
 
   const scoreClass = getScoreClass();
   const verifiedBgClass = verifiedBg();
+  console.log("Vendor data:", vendor);
 
   return (
     <div className="verification-result">
@@ -47,7 +66,7 @@ export default function VerificationResult({ score, vendor }) {
         </li>
         <li>
           <span>Followers</span>
-           <span>{vendor?.followers ?? "Not available"}</span>
+          <span>{vendor?.followers ?? "Not available"}</span>
         </li>
         <li>
           <span>Threats Detected</span>
@@ -74,9 +93,10 @@ export default function VerificationResult({ score, vendor }) {
       <div className="action-buttons">
         <button
           className="secondary"
-          onClick={() => window.open(vendor?.socialLinks?.instagram, "_blank")}
+          disabled={!socialLink}
+          onClick={() => openSocialLink(socialLink)}
         >
-          Visit Social Media Handle
+          Visit Social Media
         </button>{" "}
         <button className="danger">Report Issue</button>
       </div>
