@@ -100,10 +100,11 @@ const Signup = () => {
         phone: formData.phone.replace(/\D/g, ""), // 🔥 important
         password: formData.password.trim(),
         businessName: formData.businessName.trim(),
-        businessAddress: formData.businessAddress.trim(),
+        // businessAddress: formData.businessAddress.trim(),
         socialLinks,
       };
 
+      console.log("REGISTER PAYLOAD:", payload);
       await registerVendor(payload);
 
       navigate("/login");
@@ -165,13 +166,13 @@ const Signup = () => {
               onChange={handleChange}
             />
 
-            <input
+            {/* <input
               type="text"
               name="businessAddress"
               placeholder="Business Address"
               value={formData.businessAddress}
               onChange={handleChange}
-            />
+            /> */}
 
             <input
               type="text"

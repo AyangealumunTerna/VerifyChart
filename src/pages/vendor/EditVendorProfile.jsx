@@ -42,10 +42,10 @@ export default function EditVendorProfile() {
         "https://verifycart.onrender.com/api/vendor/profile",
         {
           method: "PATCH",
+          credentials: "include", 
           headers: {
             "Content-Type": "application/json",
           },
-          credentials: "include",
           body: JSON.stringify({
             businessName: formData.businessName,
             phone: formData.phone,
