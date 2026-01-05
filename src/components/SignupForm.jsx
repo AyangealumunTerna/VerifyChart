@@ -55,12 +55,15 @@ const Signup = () => {
 
     const newErrors = {};
 
-    const passwordRegex =
-      /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&]).{8,}$/;
+    if (formData.password.length < 8) {
+      newErrors.password = "Password must be at least 8 characters long";
+    } else {
+      const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])/;
 
-    if (!passwordRegex.test(formData.password)) {
-      newErrors.password =
-        "Password must contain uppercase, lowercase, number, and special character";
+      if (!passwordRegex.test(formData.password)) {
+        newErrors.password =
+          "Password must contain uppercase, lowercase, number, and special character";
+      }
     }
 
     if (formData.phone.length < 10) {
