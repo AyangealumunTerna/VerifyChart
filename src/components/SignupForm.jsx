@@ -55,13 +55,12 @@ const Signup = () => {
 
     const newErrors = {};
 
-    if (formData.password.length < 8) {
-      newErrors.password = "Password must be at least 8 characters";
-    }
+    const passwordRegex =
+      /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&]).{8,}$/;
 
-    if (!/[@$!%*?&]/.test(formData.password)) {
+    if (!passwordRegex.test(formData.password)) {
       newErrors.password =
-        "Password must contain at least one special character (@$!%*?&)";
+        "Password must contain uppercase, lowercase, number, and special character";
     }
 
     if (formData.phone.length < 10) {
