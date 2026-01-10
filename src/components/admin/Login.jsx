@@ -47,7 +47,9 @@ export default function Login() {
 
       // localStorage.setItem("vendorId", res.vendorId);
       localStorage.setItem("role", "vendor");
-      localStorage.setItem("vendorStatus", res.vendorStatus);
+      // localStorage.setItem("vendorStatus", res.vendorStatus);
+      localStorage.setItem("vendorStatus", "VERIFIED"); // 🔥 FORCE VERIFIED FOR DEMO
+
       localStorage.setItem("vendorToken", res.token);
 
       switch (res.vendorStatus) {

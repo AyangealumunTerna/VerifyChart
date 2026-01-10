@@ -55,7 +55,7 @@ export default function App() {
         <Route
           path="/vendor/profile"
           element={
-            <VendorGuard allowed={["APPROVED"]}>
+            <VendorGuard allowed={["VERIFIED", "Approved"]}>
               <VendorProfile />
             </VendorGuard>
           }
@@ -64,7 +64,7 @@ export default function App() {
         <Route
           path="/vendor/edit-profile"
           element={
-            <VendorGuard allowed={["APPROVED"]}>
+            <VendorGuard allowed={["VERIFIED", "Approved"]}>
               <EditVendorProfile />
             </VendorGuard>
           }
