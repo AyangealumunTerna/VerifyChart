@@ -69,3 +69,29 @@
     transform: rotate(360deg);
   }
 }
+
+@media (min-width: 1024px) {
+
+
+  .hero-verify h1 {
+    font-size: 56px; /* h1 desktop */
+  }
+  .hero-subtext {
+    font-size: 18px;
+  }
+
+  .verify-form {
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .verify-form input {
+    flex: 1;
+    max-width: 520px;
+  }
+
+  .verify-form button {
+    padding: 0.9rem 2rem;
+  }
+}

@@ -91,6 +91,29 @@
   background: #fef2f2;
   color: #dc2626;
 }
+.actions {
+  display: flex;
+  gap: 8px;
+}
+
+.actions button {
+  padding: 6px 10px;
+  border-radius: 6px;
+  border: none;
+  cursor: pointer;
+  font-size: 0.85rem;
+}
+
+.actions .approve {
+  background: #22c55e;
+  color: white;
+}
+
+.actions .reject {
+  background: #ef4444;
+  color: white;
+}
+
 /* Responsive */
 @media (max-width: 600px) {
   

@@ -1,7 +1,10 @@
-import { useState } from "react";
-import { useNavigate, Link } from "react-router-dom";
+import { useState, useEffect } from "react";
+import { useNavigate, Link, useLocation } from "react-router-dom";
 import { loginVendor } from "../../services/vendorAuth";
-import { FiEye, FiEyeOff } from "react-icons/fi";
+import { loginAdmin } from "../../services/adminAuth";
+// import { FiEye, FiEyeOff } from "react-icons/fi";
+import { FiEye, FiEyeOff, FiShield, FiShoppingBag } from "react-icons/fi";
+
 import "./Login.css";
 
 export default function Login() {
@@ -10,34 +13,66 @@ export default function Login() {
   const [showPassword, setShowPassword] = useState(false);
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
+  const [loginType, setLoginType] = useState("vendor"); // vendor | admin
+  const location = useLocation();
+
+  useEffect(() => {
+    const params = new URLSearchParams(location.search);
+    if (params.get("mode") === "admin") {
+      setLoginType("admin");
+    }
+  }, [location.search]);
 
   const navigate = useNavigate();
 
   const handleLogin = async (e) => {
     e.preventDefault();
     setError("");
-
-    // 🔐 ADMIN LOGIN (hard-coded)
-    if (email === "admin@verifycart.com" && password === "admin123") {
-      localStorage.setItem("role", "admin");
-      navigate("/admin/dashboard", { replace: true });
-      return;
-    }
+    setLoading(true);
 
     try {
-      setLoading(true);
+      if (loginType === "admin") {
+        const res = await loginAdmin({ email, password });
 
+        localStorage.setItem("role", "admin");
+        localStorage.setItem("adminToken", res.token);
+        // localStorage.setItem("vendorStatus", res.vendorStatus);
+
+        navigate("/admin/dashboard", { replace: true });
+        return;
+      }
+
+      // VENDOR LOGIN
       const res = await loginVendor({ email, password });
 
-      localStorage.setItem("vendorId", res.vendorId);
+      // localStorage.setItem("vendorId", res.vendorId);
       localStorage.setItem("role", "vendor");
+      localStorage.setItem("vendorStatus", res.vendorStatus);
+      localStorage.setItem("vendorToken", res.token);
 
-      navigate("/vendor/profile");
+      switch (res.vendorStatus) {
+        case "NOT_SUBMITTED":
+        case "REJECTED":
+          navigate("/kyc");
+          break;
+        case "PENDING":
+          navigate("/kyc-pending");
+          break;
+        case "VERIFIED":
+          navigate("/vendor/profile");
+          break;
+
+        default:
+          navigate("/login");
+      }
+      console.log("LOGIN RESPONSE:", res);
     } catch (err) {
-      if (err.response?.status === 400) {
-        setError("Invalid email or password");
+      const message = err.response?.data?.message;
+
+      if (message === "This document is already under review") {
+        navigate("/kyc-pending");
       } else {
-        setError(err.response?.data?.message || "Login failed. Try again.");
+        setError(message || "Login failed");
       }
     } finally {
       setLoading(false);
@@ -50,11 +85,44 @@ export default function Login() {
         ← Back to Home
       </button>
 
-      <div className="login-card">
-        <h2>Login</h2>
-        <p className="login-subtext">Access your VerifyCart dashboard</p>
+      <div
+        className={`login-card ${loginType === "admin" ? "admin-mode" : ""}`}
+      >
+        <h3>{loginType === "admin" ? "Admin Login" : "Vendor Login"}</h3>
+
+        <p className="login-subtext">
+          {loginType === "admin"
+            ? "Admin access only"
+            : "Access your VerifyCart vendor dashboard"}
+        </p>
 
         {error && <p className="login-error">{error}</p>}
+
+        <div className="login-switch">
+          <div
+            className={`switch-indicator ${
+              loginType === "admin" ? "right" : "left"
+            }`}
+          />
+
+          <button
+            type="button"
+            className={loginType === "vendor" ? "active" : ""}
+            onClick={() => setLoginType("vendor")}
+          >
+            <FiShoppingBag />
+            Vendor
+          </button>
+
+          <button
+            type="button"
+            className={loginType === "admin" ? "active" : ""}
+            onClick={() => setLoginType("admin")}
+          >
+            <FiShield />
+            Admin
+          </button>
+        </div>
 
         <form onSubmit={handleLogin}>
           <input
@@ -89,7 +157,11 @@ export default function Login() {
           </div>
 
           <button type="submit" disabled={loading}>
-            {loading ? "Logging in..." : "Login"}
+            {loading
+              ? "Logging in..."
+              : loginType === "admin"
+              ? "Login as Admin"
+              : "Login as Vendor"}
           </button>
         </form>
       </div>

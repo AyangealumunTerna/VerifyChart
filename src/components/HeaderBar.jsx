@@ -13,6 +13,10 @@ export const HeaderBar = () => (
     </div>
 
     <div className="header-right">
+      <Link to="/login?mode=admin" className="admin-btn signup-btn">
+        Login
+      </Link>
+
       <Link to="/Signup" className="signup-btn">
         Sign up
       </Link>

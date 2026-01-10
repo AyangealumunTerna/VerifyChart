@@ -5,6 +5,7 @@
   align-items: center;
   justify-content: center;
   background: #f4f6f8;
+  padding: 1rem;
 }
 
 .login-card {
@@ -14,9 +15,10 @@
   padding: 2.5rem;
   border-radius: 10px;
   box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+
 }
 
-.login-card h2 {
+.login-card h3 {
   text-align: center;
   margin-bottom: 0.3rem;
 }
@@ -110,4 +112,91 @@
 
 .forgot-password a:hover {
   text-decoration: underline;
+}
+
+/* LOGIN SWITCH */
+.login-switch {
+  position: relative;
+  display: flex;
+  background: #f1f5f9;
+  border-radius: 8px;
+  margin-bottom: 1.5rem;
+  overflow: hidden;
+}
+
+.login-switch button {
+  flex: 1;
+  padding: 0.6rem 0;
+  background: transparent;
+  border: none;
+  font-weight: 600;
+  font-size: 14px;
+  color: #475569;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  z-index: 2;
+}
+
+.login-switch button.active {
+  color: #2563eb;
+}
+
+/* SLIDING INDICATOR */
+.switch-indicator {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 50%;
+  background: #ffffff;
+  border-radius: 8px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.08);
+  transition: transform 0.35s ease;
+  z-index: 1;
+}
+
+.switch-indicator.left {
+  transform: translateX(0%);
+}
+
+.switch-indicator.right {
+  transform: translateX(100%);
+}
+
+.login-card.admin-mode {
+  border-top: 4px solid #dc2626;
+}
+@media (max-width: 480px) {
+  .login-card {
+    padding: 1.8rem 1.4rem;
+    border-radius: 12px;
+  }
+   .login-card h3 {
+    font-size: 22px;
+  }
+
+  .login-subtext {
+    font-size: 0.85rem;
+  }
+   .login-card input {
+    padding: 0.85rem 0.9rem;
+    font-size: 1rem;
+  }
+
+  .login-card button {
+    padding: 0.85rem;
+    font-size: 1rem;
+  }
+   .back-btn {
+    align-self: center;
+    margin: 1rem 0 1.5rem;
+    width: 100%;
+    text-align: center;
+  }
+  .login-switch button {
+    font-size: 13px;
+    padding: 0.7rem 0;
+  }
 }

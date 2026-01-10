@@ -1,0 +1,24 @@
+.kyc-pending {
+  min-height: 100vh;
+  background: linear-gradient(135deg, #eff6ff, #f8fafc);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 24px;
+  text-align: center;
+}
+
+.kyc-pending h2 {
+  font-size: 28px;
+  font-weight: 700;
+  color: #0f172a;
+  margin-bottom: 16px;
+}
+
+.kyc-pending p {
+  max-width: 520px;
+  font-size: 16px;
+  color: #475569;
+  line-height: 1.6;
+}

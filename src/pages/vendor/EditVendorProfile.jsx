@@ -5,20 +5,17 @@ import "./EditVendorProfile.css";
 export default function EditVendorProfile() {
   const navigate = useNavigate();
 
-  // const handleImage = (e, field) => {
-  //   const file = e.target.files[0];
-  //   if (!file) return;
+  /* =======================
+     IMAGE STATE
+  ======================= */
+  const [images, setImages] = useState({
+    profileImage: "",
+    bannerImage: "",
+  });
 
-  //   const reader = new FileReader();
-  //   reader.onloadend = () => {
-  //     setFormData((prev) => ({
-  //       ...prev,
-  //       [field]: reader.result,
-  //     }));
-  //   };
-  //   reader.readAsDataURL(file);
-  // };
-
+  /* =======================
+     FORM STATE
+  ======================= */
   const [formData, setFormData] = useState({
     businessName: "",
     phone: "",
@@ -29,53 +26,94 @@ export default function EditVendorProfile() {
     tiktok: "",
   });
 
+  /* =======================
+     IMAGE HANDLER
+  ======================= */
+  const handleImageChange = (e, field) => {
+    const file = e.target.files[0];
+    if (!file) return;
+
+    const reader = new FileReader();
+    reader.onloadend = () => {
+      setImages((prev) => ({
+        ...prev,
+        [field]: reader.result,
+      }));
+    };
+    reader.readAsDataURL(file);
+  };
+
+  /* =======================
+     UPLOAD IMAGES
+  ======================= */
+  const uploadImages = async () => {
+    if (!images.profileImage && !images.bannerImage) return;
+
+    const res = await fetch(
+      "https://verifycart.onrender.com/api/vendor/profile/images",
+      {
+        method: "PATCH",
+        credentials: "include",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(images),
+      }
+    );
+
+    if (!res.ok) {
+      throw new Error("Image upload failed");
+    }
+  };
+
+  /* =======================
+     FORM CHANGE
+  ======================= */
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData((prev) => ({ ...prev, [name]: value }));
   };
 
+  /* =======================
+     SAVE PROFILE
+  ======================= */
   const handleSave = async (e) => {
     e.preventDefault();
 
     try {
-      const res = await fetch(
-        "https://verifycart.onrender.com/api/vendor/profile",
-        {
-          method: "PATCH",
-          credentials: "include", 
-          headers: {
-            "Content-Type": "application/json",
+      // 1️⃣ Update profile info
+      await fetch("https://verifycart.onrender.com/api/vendor/profile", {
+        method: "PATCH",
+        credentials: "include",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          businessName: formData.businessName,
+          phone: formData.phone,
+          socialLinks: {
+            instagram: formData.instagram,
+            whatsapp: formData.whatsapp,
+            facebook: formData.facebook,
+            website: formData.website,
+            tiktok: formData.tiktok,
           },
-          body: JSON.stringify({
-            businessName: formData.businessName,
-            phone: formData.phone,
-            socialLinks: {
-              instagram: formData.instagram,
-              whatsapp: formData.whatsapp,
-              facebook: formData.facebook,
-              website: formData.website,
-              tiktok: formData.tiktok,
-            },
-          }),
-        }
-      );
+        }),
+      });
 
-      const data = await res.json();
-
-      if (!res.ok) {
-        throw new Error(data.message || "Update failed");
-      }
-
-      // sync updated profile locally
-      localStorage.setItem("vendorProfile", JSON.stringify(data.vendor));
+      // 2️⃣ Upload images (only if selected)
+      await uploadImages();
 
       navigate("/vendor/profile");
-    } catch (error) {
-      console.error(error);
-      alert("Failed to update profile");
+    } catch (err) {
+      console.error(err);
+      alert("Update failed");
     }
   };
 
+  /* =======================
+     JSX
+  ======================= */
   return (
     <div className="edit-container">
       <form className="edit-card" onSubmit={handleSave}>
@@ -120,6 +158,38 @@ export default function EditVendorProfile() {
             value={formData.website}
             onChange={handleChange}
           />
+        </label>
+
+        <label>
+          Profile Image
+          <input
+            type="file"
+            accept="image/*"
+            onChange={(e) => handleImageChange(e, "profileImage")}
+          />
+          {images.profileImage && (
+            <img
+              src={images.profileImage}
+              alt="Profile preview"
+              className="image-preview avatar"
+            />
+          )}
+        </label>
+
+        <label>
+          Banner Image
+          <input
+            type="file"
+            accept="image/*"
+            onChange={(e) => handleImageChange(e, "bannerImage")}
+          />
+          {images.bannerImage && (
+            <img
+              src={images.bannerImage}
+              alt="Banner preview"
+              className="image-preview banner"
+            />
+          )}
         </label>
 
         <div className="edit-actions">

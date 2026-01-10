@@ -1,8 +1,8 @@
 import { useNavigate } from "react-router-dom";
 import { logout } from "../../components/utils/logout";
 import "./VendorProfile.css";
-import bannerImg from "../../assets/vendor-banner.jpg";
-import avatarImg from "../../assets/vendor-avatar.jpg";
+// import bannerImg from "../../assets/vendor-banner.jpg";
+// import avatarImg from "../../assets/vendor-avatar.jpg";
 import location from "../../assets/location.png";
 import link from "../../assets/link.png";
 import calendar from "../../assets/calendar.png";
@@ -10,7 +10,6 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 import VendorLink from "../../components/VendorLink";
 import { formatLink } from "../../components/utils/formatLink";
-
 
 export default function VendorProfile() {
   const navigate = useNavigate();
@@ -63,15 +62,25 @@ export default function VendorProfile() {
   return (
     <div className="vendor-page">
       <div className="vendor-header">
-        <img
-          src={vendor.bannerImage || bannerImg}
-          alt="Vendor banner"
-          id="vendor-banner"
-        />
+        <div className="vendor-banner">
+          {vendor.bannerImage ? (
+            <img src={vendor.bannerImage} alt="Vendor banner" />
+          ) : (
+            <div className="banner-placeholder">
+              <p>Add a banner to showcase your brand</p>
+            </div>
+          )}
+        </div>
 
         <div className="vendor-info-box">
           <div className="vendor-avatar">
-            <img src={vendor.avatarImage || avatarImg} alt="Vendor logo" />
+            {vendor.profileImage ? (
+              <img src={vendor.profileImage} alt="Vendor logo" />
+            ) : (
+              <div className="avatar-placeholder">
+                <span>{vendor.businessName?.charAt(0) || "V"}</span>
+              </div>
+            )}
           </div>
 
           <div className="vendor-main">

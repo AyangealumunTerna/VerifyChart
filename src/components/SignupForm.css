@@ -122,6 +122,23 @@
   color: #0a3cff;
   cursor: pointer;
 }
+.password-rules {
+  /* margin-top: 6px; */
+  font-size: 0.85rem;
+}
+
+.password-rules p {
+  /* margin: 2px 0; */
+}
+
+.password-rules .valid {
+  color: #16a34a; /* green */
+}
+
+.password-rules .invalid {
+  color: #9ca3af; /* gray */
+}
+
 /* Responsive Styles */
 @media (max-width: 768px) {
   .signup-hero {

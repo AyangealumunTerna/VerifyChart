@@ -10,6 +10,13 @@ const Signup = () => {
   const [errors, setErrors] = useState({});
   const [loading, setLoading] = useState(false);
   const [generalError, setGeneralError] = useState("");
+  // const [passwordChecks, setPasswordChecks] = useState({
+  //   length: false,
+  //   uppercase: false,
+  //   lowercase: false,
+  //   number: false,
+  //   special: false,
+  // });
 
   const navigate = useNavigate(); // ✅ inside component
   const [showPassword, setShowPassword] = useState(false); // ✅ inside component
@@ -41,6 +48,15 @@ const Signup = () => {
     }));
 
     setGeneralError("");
+    // if (name === "password") {
+    //   setPasswordChecks({
+    //     length: value.length >= 8,
+    //     uppercase: /[A-Z]/.test(value),
+    //     lowercase: /[a-z]/.test(value),
+    //     number: /\d/.test(value),
+    //     special: /[@$!%*?&]/.test(value),
+    //   });
+    // }
   };
 
   const handleSubmit = async (e) => {
@@ -50,8 +66,18 @@ const Signup = () => {
 
     if (!certified) {
       setGeneralError("You must certify the information before signing up.");
+
       return;
     }
+
+    // const isPasswordValid = Object.values(passwordChecks).every(Boolean);
+
+    // if (!isPasswordValid) {
+    //   setErrors({
+    //     password: "Please meet all password requirements",
+    //   });
+    //   return;
+    // }
 
     const newErrors = {};
 
@@ -241,6 +267,23 @@ const Signup = () => {
               </span>
             </div>
             {errors.password && <p className="error-text">{errors.password}</p>}
+            {/* <div className="password-rules">
+              <p className={passwordChecks.length ? "valid" : "invalid"}>
+                • At least 8 characters
+              </p>
+              <p className={passwordChecks.uppercase ? "valid" : "invalid"}>
+                • One uppercase letter
+              </p>
+              <p className={passwordChecks.lowercase ? "valid" : "invalid"}>
+                • One lowercase letter
+              </p>
+              <p className={passwordChecks.number ? "valid" : "invalid"}>
+                • One number
+              </p>
+              <p className={passwordChecks.special ? "valid" : "invalid"}>
+                • One special character
+              </p>
+            </div> */}
           </div>
           <label className="checkbox">
             <input

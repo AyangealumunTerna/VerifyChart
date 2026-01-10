@@ -1,27 +1,26 @@
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
+import KYC from "./pages/KYC.jsx";
+import KYCPending from "./pages/kycPending";
 import Signup from "./components/SignupForm.jsx";
 import Home from "./pages/Home";
-import "./components/styles/breakpoints.css";
 import AdminDashboard from "./components/admin/AdminDashboard";
 import Login from "./components/admin/Login.jsx";
 import ProtectedAdminRoute from "./components/admin/ProtectedAdminRoute";
-import { Navigate } from "react-router-dom";
 import VendorProfile from "./pages/vendor/VendorProfile";
-import ProtectedVendorRoute from "./components/vendor/ProtectedVendorRoute";
 import EditVendorProfile from "./pages/vendor/EditVendorProfile";
 import ForgotPassword from "./components/ForgotPassword.jsx";
 import ResetPassword from "./components/ResetPassword.jsx";
 import RequestReset from "./components/RequestReset.jsx";
 
+import VendorGuard from "./pages/VendorGuard";
 
 export default function App() {
   return (
     <BrowserRouter>
       <Routes>
+        {/* PUBLIC */}
         <Route path="/" element={<Home />} />
         <Route path="/signup" element={<Signup />} />
-
-        {/* SHARED LOGIN */}
         <Route path="/login" element={<Login />} />
 
         {/* ADMIN */}
@@ -33,29 +32,51 @@ export default function App() {
             </ProtectedAdminRoute>
           }
         />
-        {/* <Route path="/admin" element={<Navigate to="/login" replace />} /> */}
 
-        {/* VENDOR */}
+        {/* VENDOR — STATUS AWARE */}
+        <Route
+          path="/kyc"
+          element={
+            <VendorGuard allowed={["NOT_SUBMITTED", "REJECTED"]}>
+              <KYC />
+            </VendorGuard>
+          }
+        />
+
+        <Route
+          path="/kyc-pending"
+          element={
+            <VendorGuard allowed={["PENDING"]}>
+              <KYCPending />
+            </VendorGuard>
+          }
+        />
+
         <Route
           path="/vendor/profile"
           element={
-            <ProtectedVendorRoute>
+            <VendorGuard allowed={["APPROVED"]}>
               <VendorProfile />
-            </ProtectedVendorRoute>
+            </VendorGuard>
           }
         />
 
         <Route
           path="/vendor/edit-profile"
           element={
-            <ProtectedVendorRoute>
+            <VendorGuard allowed={["APPROVED"]}>
               <EditVendorProfile />
-            </ProtectedVendorRoute>
+            </VendorGuard>
           }
         />
+
+        {/* PASSWORD */}
         <Route path="/forgot-password" element={<ForgotPassword />} />
         <Route path="/reset-password" element={<ResetPassword />} />
         <Route path="/request-reset" element={<RequestReset />} />
+
+        {/* FALLBACK */}
+        <Route path="*" element={<Navigate to="/" replace />} />
       </Routes>
     </BrowserRouter>
   );

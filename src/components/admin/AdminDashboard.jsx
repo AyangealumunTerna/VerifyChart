@@ -10,6 +10,7 @@ import { logout as logoutUtil } from "../utils/logout";
 
 export default function AdminDashboard() {
   const navigate = useNavigate();
+  const [vendors, setVendors] = useState([]);
   const [sidebarOpen, setSidebarOpen] = useState(false);
 
   const handleLogout = () => {
@@ -45,10 +46,10 @@ export default function AdminDashboard() {
 
           <h1 className="dashboard-title">Merchant Dashboard</h1>
 
-          <StatsGrid />
+          <StatsGrid vendors={vendors} />
 
           <section className="dashboard-content">
-            <ApplicationsList />
+            <ApplicationsList setVendors={setVendors} />
             <RecentComplaints />
           </section>
         </main>

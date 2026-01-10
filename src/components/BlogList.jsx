@@ -1,4 +1,5 @@
 import BlogCard from './BlogCard';
+import "./styles/breakpoints.css";
 import './BlogList.css';
 
 import blog1 from '../assets/blog/blog1.png';

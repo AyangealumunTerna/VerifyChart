@@ -1,19 +1,27 @@
-import axios from "axios";
+import API from "./api";
 
-const API = axios.create({
-  baseURL: "https://verifycart.onrender.com/api",
-});
-
-// Attach token automatically
-API.interceptors.request.use((req) => {
-  const token = localStorage.getItem("token");
-  if (token) {
-    req.headers.Authorization = `Bearer ${token}`;
-  }
-  return req;
-});
+export const getAllVerifications = async () => {
+  const res = await API.get("/admin/verification");
+  return res.data?.items || [];
+};
 
 export const getPendingVerifications = async () => {
   const res = await API.get("/admin/verification/pending");
-  return res.data;
+  return res.data?.items || [];
+};
+
+export const getVerifiedVendors = async () => {
+  const res = await API.get("/admin/vendors/approved");
+  return res.data || [];
+};
+
+export const getRejectedVendors = async () => {
+  const res = await API.get("/admin/vendors/rejected");
+  return res.data || [];
+};
+
+export const reviewVerification = async (id, decision) => {
+  return API.patch(`/admin/verification/${id}`, {
+    status: decision,
+  });
 };

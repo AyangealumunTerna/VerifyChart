@@ -24,3 +24,32 @@
   margin-top: 0.3rem;
   font-size: 20px;
 }
+
+@media (min-width: 640px) {
+  .stats {
+    flex-direction: row;
+    flex-wrap: wrap;
+  }
+
+  .stat-card {
+    flex: 1 1 calc(50% - 1rem);
+  }
+}
+
+/* Desktop */
+@media (min-width: 1024px) {
+
+  .stats {
+    flex-wrap: nowrap;
+    padding: 1rem 2rem;
+    width: 60%;
+  }
+
+  .stat-card {
+    flex: 1;
+  }
+
+  .stat-card h3 {
+    font-size: 24px; /* closer to designer scale */
+  }
+}
